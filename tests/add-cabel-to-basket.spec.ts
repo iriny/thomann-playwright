@@ -18,10 +18,11 @@ test('User can add item to the basket', async ({ page }, testInfo) => {
     await cableGuyPage.addCableEnd('BNC male');
   });
 
-  await test.step('Filter cables by manufacturer and validate alert', async () => {
+  await test.step('Filter cables by manufacturer and validate alert and quantity', async () => {
     await cableGuyPage.filterByManufactorer('Sennheiser');
     await cableGuyPage.checkFilteredCablesAlert('2 cables of Sennheiser found');
-    await cableGuyPage.checkItemsCount(2);
+    await cableGuyPage.checkItemsListCount(2);
+    await cableGuyPage.checkItemsLogoQuantity(2);
   });
 
   await test.step('Select item from list', async () => {

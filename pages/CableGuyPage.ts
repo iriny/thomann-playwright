@@ -35,4 +35,9 @@ export class CableGuyPage extends CommonActionsPage {
     await this.page.waitForSelector('.cg-count');
     await expect(this.page.getByText(expectedText)).toBeVisible();
   }
+
+  async checkItemsLogoQuantity(expectedQuantity: number) {
+    const countElement = this.page.locator('.cg-brands__item.clicked.active+.cg-brands__item__count');
+    await expect(countElement).toHaveText(String(expectedQuantity));
+  }
 }

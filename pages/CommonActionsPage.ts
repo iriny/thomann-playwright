@@ -3,12 +3,12 @@ import { Page, expect } from '@playwright/test';
 export class CommonActionsPage {
 
     protected readonly baseURL = 'https://www.thomann.de/intl/';
-
+    
     constructor(protected page: Page) {}
 
     public readonly itemsList = this.page.locator('.fx-product-list-entry');
 
-    async checkItemsCount(expectedCount: number) {
+    async checkItemsListCount(expectedCount: number) {
         await expect(this.itemsList).toHaveCount(expectedCount);
     }
 

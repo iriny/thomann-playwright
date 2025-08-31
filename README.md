@@ -56,7 +56,7 @@ This installs Chromium, Firefox, and WebKit.
 npx playwright test
 ```
 
-### Run Tests in Headed Mode (for debugging)
+### Run Tests in Headless Mode (for debugging)
 
 ```bash
 npx playwright test --headed
