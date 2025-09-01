@@ -3,16 +3,20 @@ import { CableGuyPage } from '../pages/CableGuyPage.js';
 import { ItemPage } from '../pages/ItemPage.js';
 import { BasketPage } from '../pages/BasketPage.js';
 
+let cableGuyPage: CableGuyPage;
+let itemPage: ItemPage;
+let basketPage: BasketPage;
+
+test.beforeEach(async ({ page }) => {
+  cableGuyPage = new CableGuyPage(page);
+  itemPage = new ItemPage(page);
+  basketPage = new BasketPage(page);
+
+  await cableGuyPage.open();
+  await cableGuyPage.acceptAllCookies();
+});
+
 test('User can add item to the basket', async ({ page }, testInfo) => {
-  const cableGuyPage = new CableGuyPage(page);
-  const itemPage = new ItemPage(page);
-  const basketPage = new BasketPage(page);
-
-  await test.step('Open CableGuy page and accept cookies', async () => {
-    await cableGuyPage.open();
-    await cableGuyPage.acceptAllCookies();
-  });
-
   await test.step('Select cable beginning and end', async () => {
     await cableGuyPage.addCableBeginning('BNC female');
     await cableGuyPage.addCableEnd('BNC male');
