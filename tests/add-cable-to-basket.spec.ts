@@ -7,6 +7,15 @@ let cableGuyPage: CableGuyPage;
 let itemPage: ItemPage;
 let basketPage: BasketPage;
 
+const cableBeginning = 'BNC female';
+const cableEnd = 'BNC male';
+const manufacturer = 'Sennheiser';
+const expectedAlertText = '2 cables of Sennheiser found';
+const expectedItemCount = 2;
+const itemName = 'Sennheiser AM 2 183 Suitable';
+const itemLinkSlug = 'sennheiser_am_2';
+const expectedNotification = 'Item Sennheiser AM 2 is now in the shopping basket.';
+
 test.beforeEach(async ({ page }) => {
   cableGuyPage = new CableGuyPage(page);
   itemPage = new ItemPage(page);
@@ -18,28 +27,28 @@ test.beforeEach(async ({ page }) => {
 
 test('User can add item to the basket', async ({ page }, testInfo) => {
   await test.step('Select cable beginning and end', async () => {
-    await cableGuyPage.addCableBeginning('BNC female');
-    await cableGuyPage.addCableEnd('BNC male');
+    await cableGuyPage.addCableBeginning(cableBeginning);
+    await cableGuyPage.addCableEnd(cableEnd);
   });
 
   await test.step('Filter cables by manufacturer and validate alert and quantity', async () => {
-    await cableGuyPage.filterByManufactorer('Sennheiser');
-    await cableGuyPage.checkFilteredCablesAlert('2 cables of Sennheiser found');
-    await cableGuyPage.checkItemsListCount(2);
-    await cableGuyPage.checkItemsLogoQuantity(2);
+    await cableGuyPage.filterByManufactorer(manufacturer);
+    await cableGuyPage.checkFilteredCablesAlert(expectedAlertText);
+    await cableGuyPage.checkItemsListCount(expectedItemCount);
+    await cableGuyPage.checkItemsLogoQuantity(expectedItemCount);
   });
 
   await test.step('Select item from list', async () => {
-    await cableGuyPage.selectItem('Sennheiser AM 2 183 Suitable');
+    await cableGuyPage.selectItem(itemName);
   });
 
   await test.step('Verify item details page and add to basket', async () => {
-    await itemPage.checkItemLinkContains('sennheiser_am_2');
+    await itemPage.checkItemLinkContains(itemLinkSlug);
     await itemPage.addToBasket();
   });
 
   await test.step('Validate basket page and confirmation message', async () => {
     await basketPage.checkBasketUrl();
-    await basketPage.checkNotificaiton('Item Sennheiser AM 2 is now in the shopping basket.');
+    await basketPage.checkNotificaiton(expectedNotification);
   });
 });
