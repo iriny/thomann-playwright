@@ -4,6 +4,10 @@ import { CommonActionsPage } from './CommonActionsPage';
 export class CableGuyPage extends CommonActionsPage {
   private readonly cableGuyPageURL = this.baseURL + 'cableguy.html';
   private readonly acceptCookiesBtn = this.page.locator('.js-accept-all-cookies');
+  private readonly cableBeginningBtn = this.page.getByRole('button', { name: 'cable beginning' });
+  private readonly cableEndBtn = this.page.getByRole('button', { name: 'cable end' });
+  private readonly filteredCablesAlert = this.page.locator('.cg-count');
+  private readonly itemsLogoCount = this.page.locator('.cg-brands__item.clicked.active+.cg-brands__item__count');
 
   constructor(page: Page) {
     super(page);
@@ -18,26 +22,25 @@ export class CableGuyPage extends CommonActionsPage {
   }
 
   async addCableBeginning(beginningCableName: string) {
-    await this.page.getByRole('button', { name: 'cable beginning' }).click();
+    await this.cableBeginningBtn.click();
     await this.page.getByText(beginningCableName, { exact: true }).click();
   }
 
   async addCableEnd(endCableName: string) {
-    await this.page.getByRole('button', { name: 'cable end' }).click();
+    await this.cableEndBtn.click();
     await this.page.getByText(endCableName, { exact: true }).click();
   }
 
-  async filterByManufactorer(manufactorer: string) {
-    await this.page.getByRole('img', { name: manufactorer }).click();
+  async filterByManufactorer(manufacturer: string) {
+    await this.page.getByRole('img', { name: manufacturer }).click();
   }
 
   async checkFilteredCablesAlert(expectedText: string) {
-    await this.page.waitForSelector('.cg-count');
+    await this.filteredCablesAlert.waitFor();
     await expect(this.page.getByText(expectedText)).toBeVisible();
   }
 
   async checkItemsLogoQuantity(expectedQuantity: number) {
-    const countElement = this.page.locator('.cg-brands__item.clicked.active+.cg-brands__item__count');
-    await expect(countElement).toHaveText(String(expectedQuantity));
+    await expect(this.itemsLogoCount).toHaveText(String(expectedQuantity));
   }
 }
